@@ -2,10 +2,11 @@
   "name": "nodesend-server",
   "version": "1.0.0",
   "description": "Project NodeSend",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./index.js",
-    "start": "node ./index,js"
+    "dev": "nodemon index.js",
+    "start": "node index,js"
   },
   "keywords": [
     "node",
