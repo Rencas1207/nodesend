@@ -1,7 +1,14 @@
 import User from "../models/Users.js";
 import bcrypt from 'bcrypt';
+import { validationResult } from 'express-validator'
 
 const newUser = async (req, res) => {
+   // show error messages of express validator
+   const errors = validationResult(req);
+   if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+   }
+
    // check if the user is already registered
    const { email, password } = req.body;
 
@@ -20,7 +27,6 @@ const newUser = async (req, res) => {
 
    try {
       await user.save();
-
       res.json({ msg: 'Usuario creado correctamente' })
    } catch (error) {
       console.log(error);
