@@ -1,6 +1,6 @@
 import User from "../models/Users.js";
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+
 import { validationResult } from 'express-validator'
 
 const authenticateUser = async (req, res, next) => {
@@ -31,15 +31,14 @@ const authenticateUser = async (req, res, next) => {
       });
 
       res.json({ token })
-      console.log(token);
    } else {
       res.json(401).json({ msg: "Password Incorrecto" });
       return next();
    }
 }
 
-const authenticatedUser = async (req, res) => {
-
+const authenticatedUser = async (req, res, next) => {
+   res.json({ user: req.user })
 }
 
 export {
