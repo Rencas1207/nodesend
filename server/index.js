@@ -11,6 +11,9 @@ app.use(express.json());
 dotenv.config();
 connectDB();
 
+// Enable reading the values of a body
+app.use(express.json());
+
 // port
 const port = process.env.PORT || 4000;
 
