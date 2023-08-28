@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import userRoutes from './routes/users.js';
 import authRoutes from './routes/auth.js';
-import linkRoutes from './routes/link.js';
+import linkRoutes from './routes/links.js';
 
 // create server
 const app = express();
