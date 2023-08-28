@@ -1,5 +1,6 @@
 import User from "../models/Users.js";
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 import { validationResult } from 'express-validator'
 
@@ -21,6 +22,7 @@ const authenticateUser = async (req, res, next) => {
 
    // verify the password and authenticate the user
    if (bcrypt.compareSync(password, user.password)) {
+
       // Create JWT
       const token = jwt.sign({
          id: user._id,
@@ -37,7 +39,7 @@ const authenticateUser = async (req, res, next) => {
    }
 }
 
-const authenticatedUser = async (req, res, next) => {
+const authenticatedUser = (req, res, next) => {
    res.json({ user: req.user })
 }
 

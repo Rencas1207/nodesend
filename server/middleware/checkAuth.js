@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-export const checkAuth = async (req, res, next) => {
+const checkAuth = (req, res, next) => {
    const authHeader = req.get('Authorization');
 
    if (authHeader) {
@@ -11,10 +11,13 @@ export const checkAuth = async (req, res, next) => {
       try {
          const user = jwt.verify(token, process.env.JWT_SECRET);
          req.user = user;
+         // return next();
       } catch (error) {
-         console.log('JWT no valido');
+         console.log('JWT no valido', error);
       }
    }
 
    return next();
 }
+
+export default checkAuth;
