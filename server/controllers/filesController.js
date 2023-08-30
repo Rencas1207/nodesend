@@ -1,5 +1,6 @@
 import multer from 'multer';
 import shortid from 'shortid';
+import fs from 'fs';
 
 const uploadFile = async (req, res, next) => {
    const configMulter = {
@@ -12,6 +13,7 @@ const uploadFile = async (req, res, next) => {
             const extension = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
             cb(null, `${shortid.generate()}${extension}`)
          },
+         // For when we want to validate that a particular format, in this case pdf, is not uploaded.
          // fileFilter: (req, file, cb) => {
          //    if (file.mimetype === "application/pdf") {
          //       return cb(null, true); // no allowed pdf
@@ -34,7 +36,14 @@ const uploadFile = async (req, res, next) => {
 }
 
 const deleteFile = async (req, res) => {
-   console.log('desde eliminar archivo')
+   console.log(req.file, req.file);
+
+   try {
+      fs.unlinkSync(`./uploads/${req.file}`);
+      console.log('archivo eliminado');
+   } catch (error) {
+
+   }
 }
 
 

@@ -67,13 +67,14 @@ const getLink = async (req, res, next) => {
    res.json({ file: link.name })
 
    // if downloads are equal to 1 - delete the entry and delete the file
-   const { downloads } = link;
+   const { downloads, name } = link;
 
    if (downloads === 1) {
       // delete file
+      req.file = name;
 
       // delete entry the db
-
+      await Link.findOneAndRemove(req.params.url);
       next();
    } else {
       link.downloads--;
