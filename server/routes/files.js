@@ -4,6 +4,6 @@ import checkAuth from '../middleware/checkAuth.js'
 
 const router = Router();
 
-router.post('/', uploadFile);
+router.post('/', checkAuth, uploadFile);
 router.get('/:id', deleteFile);
 export default router;
