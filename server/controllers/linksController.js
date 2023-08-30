@@ -50,6 +50,39 @@ const newLink = async (req, res) => {
    }
 }
 
+// get link
+const getLink = async (req, res, next) => {
+
+   const { url } = req.params;
+
+   // check if the link exists
+   const link = await Link.findOne({ url });
+
+   if (!link) {
+      res.status(404).json({ msg: 'Ese enlace no existe' });
+      return next();
+   }
+
+   // if the link exists
+   res.json({ file: link.name })
+
+   // if downloads are equal to 1 - delete the entry and delete the file
+   const { downloads } = link;
+
+   if (downloads === 1) {
+      // delete file
+
+      // delete entry the db
+
+      next();
+   } else {
+      link.downloads--;
+      await link.save();
+   }
+   // if discharges are greater than 1 - subtract 1
+}
+
 export {
    newLink,
+   getLink
 }
