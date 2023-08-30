@@ -1,5 +1,37 @@
-const uploadFile = async (req, res) => {
-   console.log(req.file);
+import multer from 'multer';
+import shortid from 'shortid';
+
+const configMulter = {
+   limits: { fileSize: 1024 * 1024 },
+   storage: multer.diskStorage({
+      destination: (req, file, cb) => {
+         cb(null, './uploads')
+      },
+      filename: (req, file, cb) => {
+         // const extension = file.mimetype.split('/')[1];
+         const extension = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
+         cb(null, `${shortid.generate()}.${extension}`)
+      },
+      // fileFilter: (req, file, cb) => {
+      //    if (file.mimetype === "application/pdf") {
+      //       return cb(null, true); // no allowed pdf
+      //    }
+      // },
+   })
+}
+
+const upload = multer(configMulter).single('file');
+
+const uploadFile = async (req, res, next) => {
+   upload(req, res, async (error) => {
+      console.log(req.file);
+      if (!error) {
+         res.json({ file: req.file.filename });
+      } else {
+         console.log(error);
+         return next()
+      }
+   })
 }
 
 const deleteFile = async (req, res) => {
