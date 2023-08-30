@@ -36,13 +36,11 @@ const uploadFile = async (req, res, next) => {
 }
 
 const deleteFile = async (req, res) => {
-   console.log(req.file, req.file);
-
    try {
       fs.unlinkSync(`./uploads/${req.file}`);
       console.log('archivo eliminado');
    } catch (error) {
-
+      console.log(error);
    }
 }
 
