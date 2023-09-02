@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import connectDB from './config/db.js';
 import userRoutes from './routes/users.js';
 import authRoutes from './routes/auth.js';
@@ -14,11 +15,17 @@ app.use(express.json());
 dotenv.config();
 connectDB();
 
-// Enable reading the values of a body
-app.use(express.json());
+// Enable CORS
+const optionsCors = {
+   origin: process.env.FRONTEND_URL
+}
+app.use(cors(optionsCors));
 
 // port
 const port = process.env.PORT || 4000;
+
+// Enable reading the values of a body
+app.use(express.json());
 
 // routes app
 app.use('/api/users', userRoutes);
