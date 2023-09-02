@@ -2,7 +2,12 @@ import { useReducer } from "react";
 import authContext from "./authContext";
 import authReducer from "./authReducer";
 
-import { AUTHENTICATED_USER } from '@/types'
+import {
+   SUCCESFUL_REGISTRATION,
+   ERROR_REGISTRATION,
+   CLEAR_ALERT
+}
+   from '@/types'
 import clientAxios from "@/config/axios";
 
 const AuthState = ({ children }) => {
@@ -18,23 +23,26 @@ const AuthState = ({ children }) => {
    // define the reduce
    const [state, dispatch] = useReducer(authReducer, initialState)
 
-   // authenticated user
-   const authenticatedUser = (name) => {
-      dispatch({
-         type: AUTHENTICATED_USER,
-         payload: name
-      })
-   }
-
    // register new users
    const registerUser = async (data) => {
-      console.log(process.env.NEXT_PUBLIC_BACKENDURL);
       try {
          const response = await clientAxios.post('/api/users', data);
-         console.log(response);
+         dispatch({
+            type: SUCCESFUL_REGISTRATION,
+            payload: response.data.msg
+         })
       } catch (error) {
-         console.log(error.response);
+         dispatch({
+            type: ERROR_REGISTRATION,
+            payload: error.response.data.msg
+         })
       }
+
+      setTimeout(() => {
+         dispatch({
+            type: CLEAR_ALERT
+         })
+      }, 2000)
    }
 
    return (
@@ -45,7 +53,6 @@ const AuthState = ({ children }) => {
             user: state.user,
             message: state.message,
             registerUser,
-            authenticatedUser,
          }}
       >
          {children}
