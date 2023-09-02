@@ -1,18 +1,13 @@
+import Alert from "@/components/Alert";
 import Layout from "@/components/Layout";
 import authContext from "@/context/auth/authContext";
 import { useFormik } from 'formik';
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import * as Yup from 'yup';
 
 export default function CreateAccount() {
    const AuthContext = useContext(authContext);
-   const { registerUser } = AuthContext;
-
-   // useEffect(() => {
-   //    setTimeout(() => {
-   //       authenticatedUser()
-   //    }, 3000)
-   // }, [])
+   const { message, registerUser } = AuthContext;
 
    // form and validation with formik & yup
    const formik = useFormik({
@@ -37,7 +32,9 @@ export default function CreateAccount() {
       <Layout>
          <div className="md:w-4/5 xl:w-3/5 mx-auto mb-32 ">
             <h2 className="text-4xl font-sans font-bold text-gray-800 text-center my-4">Crear cuenta</h2>
-
+            {
+               message && <Alert />
+            }
             <div className="flex justify-center mt-5">
                <div className="w-full max-w-lg">
                   <form className="bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4" onSubmit={formik.handleSubmit}>
@@ -113,7 +110,7 @@ export default function CreateAccount() {
                      <input
                         type="submit"
                         value="Crear cuenta"
-                        className="bg-red-500 hover:bg-gray-900 w-full p-2 text-white uppercase font-bold cursor-pointer"
+                        className="bg-red-500 rounded-lg hover:bg-gray-900 w-full p-2 text-white uppercase font-bold cursor-pointer"
                      />
                   </form>
                </div>

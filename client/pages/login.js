@@ -75,7 +75,7 @@ export default function Login() {
                      <input
                         type="submit"
                         value="Iniciar Sesión"
-                        className="bg-red-500 hover:bg-gray-900 w-full p-2 text-white uppercase font-bold cursor-pointer"
+                        className="bg-red-500 rounded-lg hover:bg-gray-900 w-full p-2 text-white uppercase font-bold cursor-pointer"
                      />
                   </form>
                </div>
