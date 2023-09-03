@@ -3,14 +3,17 @@ import authContext from "./authContext";
 import authReducer from "./authReducer";
 
 import {
+   AUTHENTICATED_USER,
    SUCCESFUL_REGISTRATION,
    ERROR_REGISTRATION,
    CLEAR_ALERT,
    ERROR_LOGIN,
-   SUCCESFUL_LOGIN
+   SUCCESFUL_LOGIN,
+   SIGN_OUT
 }
    from '@/types'
 import clientAxios from "@/config/axios";
+import tokenAuth from "@/config/tokenAuth";
 
 const AuthState = ({ children }) => {
 
@@ -56,7 +59,6 @@ const AuthState = ({ children }) => {
             type: SUCCESFUL_LOGIN,
             payload: response.data.token
          })
-         console.log(response);
       } catch (error) {
          dispatch({
             type: ERROR_LOGIN,
@@ -71,6 +73,38 @@ const AuthState = ({ children }) => {
       }, 2000)
    }
 
+   // return the authenticated user based on the JWT
+   const userAuthenticated = async () => {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+         tokenAuth(token);
+      }
+
+      try {
+         const response = await clientAxios.get('/api/auth');
+         if (response.data.user) {
+            dispatch({
+               type: AUTHENTICATED_USER,
+               payload: response.data.user
+            })
+         }
+
+      } catch (error) {
+         dispatch({
+            type: ERROR_LOGIN,
+            payload: error.response.data.msg
+         })
+      }
+   }
+
+   // sign out
+   const signOut = () => {
+      dispatch({
+         type: SIGN_OUT,
+      })
+   }
+
    return (
       <authContext.Provider
          value={{
@@ -80,7 +114,9 @@ const AuthState = ({ children }) => {
             message: state.message,
             loading: state.loading,
             registerUser,
-            login
+            login,
+            userAuthenticated,
+            signOut
          }}
       >
          {children}
