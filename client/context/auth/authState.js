@@ -5,7 +5,9 @@ import authReducer from "./authReducer";
 import {
    SUCCESFUL_REGISTRATION,
    ERROR_REGISTRATION,
-   CLEAR_ALERT
+   CLEAR_ALERT,
+   ERROR_LOGIN,
+   SUCCESFUL_LOGIN
 }
    from '@/types'
 import clientAxios from "@/config/axios";
@@ -14,10 +16,11 @@ const AuthState = ({ children }) => {
 
    // define an initial state
    const initialState = {
-      token: '',
+      token: typeof window !== 'undefined' ? localStorage.getItem('token') : '',
       authenticated: null,
       user: null,
-      message: null
+      message: null,
+      loading: null
    }
 
    // define the reduce
@@ -45,6 +48,29 @@ const AuthState = ({ children }) => {
       }, 2000)
    }
 
+   // authenticate user
+   const login = async (data) => {
+      try {
+         const response = await clientAxios.post('/api/auth', data);
+         dispatch({
+            type: SUCCESFUL_LOGIN,
+            payload: response.data.token
+         })
+         console.log(response);
+      } catch (error) {
+         dispatch({
+            type: ERROR_LOGIN,
+            payload: error.response.data.msg
+         })
+      }
+
+      setTimeout(() => {
+         dispatch({
+            type: CLEAR_ALERT
+         })
+      }, 2000)
+   }
+
    return (
       <authContext.Provider
          value={{
@@ -52,7 +78,9 @@ const AuthState = ({ children }) => {
             authenticated: state.authenticated,
             user: state.user,
             message: state.message,
+            loading: state.loading,
             registerUser,
+            login
          }}
       >
          {children}

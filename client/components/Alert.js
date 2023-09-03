@@ -1,7 +1,6 @@
 import authContext from "@/context/auth/authContext"
 import { useContext } from "react"
 
-
 const Alert = () => {
    const AuthContext = useContext(authContext);
    const { message } = AuthContext;
