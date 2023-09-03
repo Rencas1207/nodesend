@@ -4,3 +4,4 @@ export const ERROR_REGISTRATION = 'ERROR_REGISTRATION';
 export const CLEAR_ALERT = 'CLEAR_ALERT';
 export const SUCCESFUL_LOGIN = 'SUCCESFUL_LOGIN';
 export const ERROR_LOGIN = 'ERROR_LOGIN';
+export const SIGN_OUT = 'SIGN_OUT';
