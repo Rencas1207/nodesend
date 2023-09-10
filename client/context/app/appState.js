@@ -19,6 +19,10 @@ const AppState = ({ children }) => {
       name: '',
       original_name: '',
       loading: null,
+      downloads: 1,
+      password: '',
+      author: null,
+      url: ''
    }
 
    const [state, dispatch] = useReducer(appReducer, initialState);
@@ -58,6 +62,26 @@ const AppState = ({ children }) => {
       }
    }
 
+   const createLink = async () => {
+      const data = {
+         name: state.name,
+         original_name: state.original_name,
+         downloads: state.downloads,
+         password: state.password,
+         author: state.author
+      }
+
+      try {
+         const response = await clientAxios.post('api/links', data)
+         dispatch({
+            type: CREATE_LINK_SUCCESS,
+            payload: response.data.msg
+         });
+      } catch (error) {
+         console.log(error);
+      }
+   }
+
    return (
       <appContext.Provider
          value={{
@@ -65,8 +89,13 @@ const AppState = ({ children }) => {
             name: state.name,
             original_name: state.original_name,
             loading: state.loading,
+            downloads: state.downloads,
+            password: state.password,
+            author: state.author,
+            url: state.url,
             showAlert,
-            uploadFile
+            uploadFile,
+            createLink
          }}>
          {children}
       </appContext.Provider>
