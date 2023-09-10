@@ -6,7 +6,7 @@ import appContext from '@/context/app/appContext';
 const Dropzone = () => {
 
    const AppContext = useContext(appContext);
-   const { showAlert } = AppContext;
+   const { showAlert, uploadFile, loading } = AppContext;
 
    const onDropRejected = () => {
       showAlert('No se pudo subir, el límite es 1MB, obtén una cuenta gratis para subir archivos más grandes');
@@ -17,8 +17,7 @@ const Dropzone = () => {
       const formData = new FormData();
       formData.append('file', acceptedFiles[0]);
 
-      const response = await clientAxios.post('api/files', formData);
-      console.log(response.data);
+      uploadFile(formData, acceptedFiles[0].path);
    }, [])
 
    const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
@@ -46,13 +45,18 @@ const Dropzone = () => {
                <ul>
                   {files}
                </ul>
-               <button
-                  type='button'
-                  className='bg-blue-700 w-full py-3 rounded-lg text-white my-10 hover:bg-blue-800'
-                  onClick={() => createLink()}
-               >
-                  Crear enlace
-               </button>
+               {
+                  loading ? <p className='my-10 text-center text-gray-600 '>Subiendo archivo...</p> : (
+                     <button
+                        type='button'
+                        className='bg-blue-700 w-full py-3 rounded-lg text-white my-10 hover:bg-blue-800'
+                        onClick={() => createLink()}
+                     >
+                        Crear enlace
+                     </button>
+                  )
+               }
+
             </div>
 
          ) : (
