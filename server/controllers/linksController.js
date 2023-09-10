@@ -12,17 +12,15 @@ const newLink = async (req, res) => {
    }
 
    // create a object of Link
-   const { original_name } = req.body;
+   const { original_name, name } = req.body;
 
    const link = new Link();
 
    link.url = shortid.generate();
-   link.name = shortid.generate();
+   link.name = name;
    link.original_name = original_name;
 
    // if the user is authenticated
-   console.log(req.user);
-
    if (req.user) {
       const { password, downloads } = req.body
 
