@@ -21,7 +21,7 @@ export const Header = () => {
                width={64}
                height={50}
                className="w-64 mb-8 md:mb-0"
-               src="logo.svg"
+               src="/logo.svg"
                alt="logo react node send"
                priority
             />
