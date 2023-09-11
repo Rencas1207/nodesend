@@ -64,6 +64,8 @@ const getLink = async (req, res, next) => {
    // if the link exists
    res.json({ file: link.name })
 
+
+   return;
    // if downloads are equal to 1 - delete the entry and delete the file
    const { downloads, name } = link;
 
@@ -81,7 +83,19 @@ const getLink = async (req, res, next) => {
    // if discharges are greater than 1 - subtract 1
 }
 
+// get a list of all links
+const allLinks = async (req, res) => {
+   try {
+      const links = await Link.find({}).select('url -_id');
+      console.log(links)
+      res.json({ links });
+   } catch (error) {
+      console.log(error);
+   }
+}
+
 export {
    newLink,
-   getLink
+   getLink,
+   allLinks
 }
