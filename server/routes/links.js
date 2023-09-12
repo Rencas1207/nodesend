@@ -13,6 +13,6 @@ router.post('/', [
 
 router.get('/', allLinks);
 
-router.get('/:url', getLink, deleteFile);
+router.get('/:url', getLink);
 
 export default router;
