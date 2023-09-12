@@ -1,11 +1,19 @@
 import authContext from "@/context/auth/authContext";
+import appContext from "@/context/app/appContext";
 import Image from "next/image"
 import Link from "next/link"
 import { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
 
 export const Header = () => {
+
+   const router = useRouter();
+
    const AuthContext = useContext(authContext);
    const { userAuthenticated, user, signOut, authenticated } = AuthContext;
+
+   const AppContext = useContext(appContext);
+   const { clearState } = AppContext;
 
    useEffect(() => {
       const token = localStorage.getItem('token');
@@ -14,18 +22,23 @@ export const Header = () => {
       }
    }, [authenticated])
 
+   const redirect = () => {
+      router.push('/');
+      clearState();
+   }
+
    return (
       <header className="py-8 flex flex-col md:flex-row items-center justify-between">
-         <Link href="/">
-            <Image
-               width={64}
-               height={50}
-               className="w-64 mb-8 md:mb-0"
-               src="/logo.svg"
-               alt="logo react node send"
-               priority
-            />
-         </Link>
+         <Image
+            onClick={() => redirect()}
+            width={64}
+            height={50}
+            className="w-64 mb-8 md:mb-0 cursor-pointer"
+            src="/logo.svg"
+            alt="logo react node send"
+            priority
+         />
+
 
          <div>
             {

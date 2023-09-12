@@ -52,6 +52,7 @@ const download = async (req, res, next) => {
 
    const fileUploaded = './uploads/' + file;
    res.download(fileUploaded);
+   console.log(link);
 
    // delete file and database entry
    // if downloads are equal to 1 - delete the entry and delete the file
