@@ -1,6 +1,7 @@
 import multer from 'multer';
 import shortid from 'shortid';
 import fs from 'fs';
+import Link from '../models/Link.js';
 
 const uploadFile = async (req, res, next) => {
    const configMulter = {
@@ -44,9 +45,30 @@ const deleteFile = async (req, res) => {
    }
 }
 
-const download = async (req, res) => {
-   const file = './uploads/' + req.params.file;
-   res.download(file);
+const download = async (req, res, next) => {
+   // Get link
+   const { file } = req.params;
+   const link = await Link.findOne({ name: file });
+
+   const fileUploaded = './uploads/' + file;
+   res.download(fileUploaded);
+
+   // delete file and database entry
+   // if downloads are equal to 1 - delete the entry and delete the file
+   const { downloads, name } = link;
+
+   if (downloads === 1) {
+      // delete file
+      req.file = name;
+
+      // delete entry the db
+      await Link.findOneAndRemove(link.id);
+      next();
+   } else {
+      link.downloads--;
+      await link.save();
+   }
+   // if discharges are greater than 1 - subtract 1
 }
 
 export {

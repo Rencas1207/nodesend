@@ -1,19 +1,18 @@
 import Layout from '@/components/Layout'
 import clientAxios from '@/config/axios'
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
    const { link } = params;
    const response = await clientAxios.get(`/api/links/${link}`);
 
    return {
       props: {
          link: response.data
-      },
-      revalidate: 10
+      }
    }
 }
 
-export async function getStaticPaths() {
+export async function getServerSidePaths() {
    const links = await clientAxios.get('/api/links');
 
    const paths = links.data.links.map((link) => {

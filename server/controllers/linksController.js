@@ -64,23 +64,7 @@ const getLink = async (req, res, next) => {
    // if the link exists
    res.json({ file: link.name })
 
-
-   return;
-   // if downloads are equal to 1 - delete the entry and delete the file
-   const { downloads, name } = link;
-
-   if (downloads === 1) {
-      // delete file
-      req.file = name;
-
-      // delete entry the db
-      await Link.findOneAndRemove(req.params.url);
-      next();
-   } else {
-      link.downloads--;
-      await link.save();
-   }
-   // if discharges are greater than 1 - subtract 1
+   next();
 }
 
 // get a list of all links
