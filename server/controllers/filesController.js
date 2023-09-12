@@ -44,8 +44,13 @@ const deleteFile = async (req, res) => {
    }
 }
 
+const download = async (req, res) => {
+   const file = './uploads/' + req.params.file;
+   res.download(file);
+}
 
 export {
    uploadFile,
-   deleteFile
+   deleteFile,
+   download
 }
