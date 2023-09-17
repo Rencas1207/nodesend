@@ -1,12 +1,16 @@
 import { useCallback, useContext } from 'react';
 import { useDropzone } from 'react-dropzone'
-import clientAxios from '@/config/axios'
 import appContext from '@/context/app/appContext';
+import authContext from '@/context/auth/authContext';
+import Form from './Form';
 
 const Dropzone = () => {
 
    const AppContext = useContext(appContext);
    const { showAlert, uploadFile, createLink, loading } = AppContext;
+
+   const AuthContext = useContext(authContext);
+   const { user, authenticated } = AuthContext;
 
    const onDropRejected = () => {
       showAlert('No se pudo subir, el límite es 1MB, obtén una cuenta gratis para subir archivos más grandes');
@@ -33,8 +37,6 @@ const Dropzone = () => {
       </li>
    ));
 
-
-
    return (
       <div className="md:flex-1 mb-3 mx-2 mt-16 lg:mt-0 flex flex-col items-center justify-center border-dashed border-gray-400 border-2 bg-gray-100 px-4">
          {acceptedFiles.length > 0 ? (
@@ -43,6 +45,11 @@ const Dropzone = () => {
                <ul>
                   {files}
                </ul>
+
+               {
+                  authenticated ? <Form /> : 'no estas autenticado'
+               }
+
                {
                   loading ? <p className='my-10 text-center text-gray-600 '>Subiendo archivo...</p> : (
                      <button
