@@ -78,8 +78,27 @@ const allLinks = async (req, res) => {
    }
 }
 
+const hasPassword = async (req, res, next) => {
+   const { url } = req.params;
+
+   // check if the link exists
+   const link = await Link.findOne({ url });
+
+   if (!link) {
+      res.status(404).json({ msg: 'Ese enlace no existe' });
+      return next();
+   }
+
+   if (link.password) {
+      return res.json({ password: true, link: link.url })
+   }
+
+   next();
+}
+
 export {
    newLink,
    getLink,
-   allLinks
+   allLinks,
+   hasPassword
 }
