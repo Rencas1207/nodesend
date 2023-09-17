@@ -1,5 +1,5 @@
 import express from 'express'
-import { getLink, newLink, allLinks } from '../controllers/linksController.js';
+import { getLink, newLink, allLinks, hasPassword } from '../controllers/linksController.js';
 import { check } from 'express-validator'
 import { deleteFile } from '../controllers/filesController.js';
 import checkAuth from '../middleware/checkAuth.js';
@@ -13,6 +13,6 @@ router.post('/', [
 
 router.get('/', allLinks);
 
-router.get('/:url', getLink);
+router.get('/:url', hasPassword, getLink);
 
 export default router;
