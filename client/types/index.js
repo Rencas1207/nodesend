@@ -16,3 +16,4 @@ export const CREATE_LINK_ERROR = 'CREATE_LINK_ERROR';
 export const CLEAR_STATE = 'CLEAR_STATE';
 
 export const ADD_PASSWORD = 'ADD_PASSWORD';
+export const ADD_DOWNLOADS = 'ADD_DOWNLOADS';
