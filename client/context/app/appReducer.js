@@ -6,7 +6,8 @@ import {
    CREATE_LINK_SUCCESS,
    CREATE_LINK_ERROR,
    UPLOAD_FILE,
-   CLEAR_STATE
+   CLEAR_STATE,
+   ADD_PASSWORD
 } from "@/types"
 
 export default (state, action) => {
@@ -58,6 +59,12 @@ export default (state, action) => {
             password: '',
             author: null,
             url: ''
+         }
+
+      case ADD_PASSWORD:
+         return {
+            ...state,
+            password: action.payload
          }
       default:
          return state
