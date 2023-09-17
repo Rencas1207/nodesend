@@ -62,7 +62,7 @@ const getLink = async (req, res, next) => {
    }
 
    // if the link exists
-   res.json({ file: link.name })
+   res.json({ file: link.name, password: false })
 
    next();
 }
@@ -96,9 +96,26 @@ const hasPassword = async (req, res, next) => {
    next();
 }
 
+const verifyPassword = async (req, res, next) => {
+   const { url } = req.params;
+   const { password } = req.body;
+
+   // consult through the link
+   const link = await Link.findOne({ url });
+
+   // verify pwd
+   if (bcrypt.compareSync(password, link.password)) {
+      // allow the user to download the file
+      next();
+   } else {
+      return res.status(401).json({ msg: 'Password incorrecto' });
+   }
+}
+
 export {
    newLink,
    getLink,
    allLinks,
-   hasPassword
+   hasPassword,
+   verifyPassword
 }

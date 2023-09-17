@@ -1,6 +1,8 @@
+import { useContext, useState } from 'react';
 import Layout from '@/components/Layout'
 import clientAxios from '@/config/axios'
-import { useState } from 'react';
+import appContext from '@/context/app/appContext'
+import Alert from '@/components/Alert';
 
 export async function getServerSideProps({ params }) {
    const { link } = params;
@@ -32,11 +34,24 @@ export async function getServerSidePaths() {
 
 export default ({ link }) => {
    const [hasPwd, setHasPwd] = useState(link.password);
+   const [password, setPassword] = useState('');
 
-   const verifyPassword = (e) => {
+   const AppContext = useContext(appContext);
+   const { showAlert, msg_file } = AppContext;
+
+   const verifyPassword = async (e) => {
       e.preventDefault();
 
-      console.log('verificando xd')
+      const data = {
+         password
+      }
+
+      try {
+         const response = await clientAxios.post(`/api/links/${link.link}`, data);
+         setHasPwd(response.data.password)
+      } catch (error) {
+         showAlert(error.response.data.msg);
+      }
    }
 
    return (
@@ -45,6 +60,9 @@ export default ({ link }) => {
             hasPwd ? (
                <>
                   <p className='text-center'>Este enlace esta protegido por un password, colocalo a continuación</p>
+                  {
+                     msg_file && <Alert />
+                  }
                   <div className="flex justify-center mt-5">
                      <div className="w-full max-w-lg">
                         <form
@@ -61,6 +79,8 @@ export default ({ link }) => {
                                  id="password"
                                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
                                  placeholder="Password del enlace"
+                                 value={password}
+                                 onChange={e => setPassword(e.target.value)}
                               />
                               <input
                                  type="submit"
